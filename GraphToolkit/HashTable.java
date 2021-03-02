@@ -14,7 +14,7 @@ import java.util.Set;
 @SuppressWarnings("unchecked")
 public class HashTable<K, V> {
     int size = 1;
-    public node<K, V>[] table = new node[size];
+    public Node<K, V>[] table = new Node[size];
     int occupied = 0;
 
 
@@ -38,10 +38,10 @@ public class HashTable<K, V> {
 
     public void put(K key, V value) {
 
-        node<K, V> e = new node<>(key, value);
+        Node<K, V> e = new Node<>(key, value);
         int index = hashFIndex(key);
         if (table[index] != null) {
-            node<K, V> current = table[index];
+            Node<K, V> current = table[index];
             while (current.next != null)
                 current = current.next;
             current.next = e;
@@ -69,8 +69,8 @@ public class HashTable<K, V> {
 
     public V remove(K key) {
         int index = hashFIndex(key);
-        node<K, V> current = table[index];
-        node<K, V> previous;
+        Node<K, V> current = table[index];
+        Node<K, V> previous;
         if (table[index] != null && table[index].next == null) {
             current = table[index];
             table[index] = null;
@@ -100,7 +100,7 @@ public class HashTable<K, V> {
      */
     public V get(K key) {
         int index = hashFIndex(key);
-        node<K, V> head = table[index];
+        Node<K, V> head = table[index];
         if (head == null) return null;
         while (!head.key.equals(key)) {
             if (head.next == null) return null;
@@ -121,7 +121,7 @@ public class HashTable<K, V> {
      */
     public boolean containsKey(K key) {
         int index = hashFIndex(key);
-        node<K, V> head = table[index];
+        Node<K, V> head = table[index];
 
         if (head == null) return false;
         if (head.key.equals(key)) return true;
@@ -143,10 +143,10 @@ public class HashTable<K, V> {
 
     private void assureCapacity() {
         if (0.75 * this.table.length <= this.occupied) {
-            node<K, V>[] temp = this.table.clone();
+            Node<K, V>[] temp = this.table.clone();
 
-            table = new node[2 * table.length];
-            for (node<K, V> node : temp) {
+            table = new Node[2 * table.length];
+            for (Node<K, V> node : temp) {
                 while (node != null) {
                     put(node.getKey(), node.getValue());
                     occupied--;
@@ -164,7 +164,7 @@ public class HashTable<K, V> {
         Set<K> keySet = new HashSet<>();
 
 
-        for (node<K, V> node : this.table) {
+        for (Node<K, V> node : this.table) {
             while (node != null) {
                 keySet.add(node.key);
                 node = node.next;
@@ -179,12 +179,12 @@ public class HashTable<K, V> {
      * @param <K> Type of the keys.
      * @param <V> Type of the values.
      */
-    protected static class node<K, V> {
+    protected static class Node<K, V> {
         private K key;
         private V value;
-        private node<K, V> next = null;
+        private Node<K, V> next = null;
 
-        public node(K key, V value) {
+        public Node(K key, V value) {
             this.key = key;
             this.value = value;
         }
@@ -205,11 +205,11 @@ public class HashTable<K, V> {
             this.value = value;
         }
 
-        public node<K, V> getNext() {
+        public Node<K, V> getNext() {
             return next;
         }
 
-        public void setNext(node<K, V> next) {
+        public void setNext(Node<K, V> next) {
             this.next = next;
         }
 
